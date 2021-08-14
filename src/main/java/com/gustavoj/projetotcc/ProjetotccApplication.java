@@ -13,6 +13,7 @@ import com.gustavoj.projetotcc.domain.Cidade;
 import com.gustavoj.projetotcc.domain.Cliente;
 import com.gustavoj.projetotcc.domain.Endereco;
 import com.gustavoj.projetotcc.domain.Estado;
+import com.gustavoj.projetotcc.domain.ItemPedido;
 import com.gustavoj.projetotcc.domain.Pagamento;
 import com.gustavoj.projetotcc.domain.PagamentoComBoleto;
 import com.gustavoj.projetotcc.domain.PagamentoComCartao;
@@ -25,6 +26,7 @@ import com.gustavoj.projetotcc.repositories.CidadeRepository;
 import com.gustavoj.projetotcc.repositories.ClienteRepository;
 import com.gustavoj.projetotcc.repositories.EnderecoRepository;
 import com.gustavoj.projetotcc.repositories.EstadoRepository;
+import com.gustavoj.projetotcc.repositories.ItemPedidoRepository;
 import com.gustavoj.projetotcc.repositories.PagamentoRepository;
 import com.gustavoj.projetotcc.repositories.PedidoRepository;
 import com.gustavoj.projetotcc.repositories.ProdutoRepository;
@@ -52,9 +54,12 @@ public class ProjetotccApplication implements CommandLineRunner {
 	
 	@Autowired
 	private PedidoRepository pedidoRepository;
-	@Autowired
 	
+	@Autowired
 	private PagamentoRepository pagamentoRepository;
+	
+	@Autowired
+	private ItemPedidoRepository itemPedidoRepository;
 
 	
 	public static void main(String[] args) {
@@ -122,9 +127,19 @@ public class ProjetotccApplication implements CommandLineRunner {
 		pedidoRepository.saveAll(Arrays.asList(ped1, ped2));
 		pagamentoRepository.saveAll(Arrays.asList(pagto1, pagto2));
 		
+		ItemPedido ip1 = new ItemPedido(ped1, p1, 0.00, 1, 2000.00);
+		ItemPedido ip2 = new ItemPedido(ped1, p3, 0.00, 2, 80.00);
+		ItemPedido ip3 = new ItemPedido(ped2, p2, 100.00, 1, 800.00);
+		
+		ped1.getItens().addAll(Arrays.asList(ip1, ip2));
+		ped2.getItens().addAll(Arrays.asList(ip3));
+		
+		p1.getItens().addAll(Arrays.asList(ip1));
+		p2.getItens().addAll(Arrays.asList(ip3));
+		p3.getItens().addAll(Arrays.asList(ip2));
+		
+		itemPedidoRepository.saveAll(Arrays.asList(ip1, ip2, ip3));
+		
 	}
 	
-	
-	
-
 }
