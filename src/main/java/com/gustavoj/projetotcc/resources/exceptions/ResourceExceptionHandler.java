@@ -36,6 +36,7 @@ public class ResourceExceptionHandler {
 			error.addError(fieldErr.getField(), fieldErr.getDefaultMessage());
 		}
 		
+		
 		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
 	}
 	
