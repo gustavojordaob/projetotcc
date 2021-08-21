@@ -5,9 +5,12 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import com.gustavoj.projetotcc.domain.Categoria;
+import com.gustavoj.projetotcc.dto.CategoriaDTO;
 import com.gustavoj.projetotcc.repositories.CategoriaRepository;
 import com.gustavoj.projetotcc.services.exceptions.DataIntegratityException;
 import com.gustavoj.projetotcc.services.exceptions.ObjectNotFoundException;
@@ -44,5 +47,14 @@ public class CategoriaService {
 
 	public List<Categoria> findaAll() {
 		return repo.findAll();
+	}
+	
+	public Page<Categoria> findPage(Integer page, Integer linesPerPage, String orderBy, String direction){
+		PageRequest pageRequest = PageRequest.of(page, linesPerPage, org.springframework.data.domain.Sort.Direction.valueOf(direction), orderBy);
+		return repo.findAll(pageRequest);
+	}
+	
+	public Categoria fromDTO(CategoriaDTO categoriaDTO) {
+		return new Categoria(categoriaDTO.getId(), categoriaDTO.getNome());
 	}
 }
